@@ -2,6 +2,7 @@ import boto3
 import urllib.request
 import sys
 import os
+import mysql.connector
 
 s3 = boto3.resource('s3')
 bucket_name = s3.Bucket('friendsurance-test')
@@ -73,7 +74,18 @@ def remove_image_from_s3(num_arg,file_name):
 
 #Inserting details to db
 def insert_into_db():
-    pass
+  mydb = mysql.connector.connect(
+  host="192.168.33.10",
+  user="frndsuranceuser",
+  passwd="password123",
+  database="frndsurancedb"
+  )
+  mycursor = mydb.cursor()
+  #create table imageinfo(image_name VARCHAR(255),image_link VARCHAR(255),s3_path VARCHAR(255),image_time_stamp TIMESTAMP);
+  sql = "INSERT INTO customers (image_name, image_link, s3_path, image_time_stamp) VALUES (%s, %s, %s, %s)"
+  val = ("myimage", " https://3.bp.blogspot.com/-WHwA7WPQ2IY/VwHnGnn_9EI/AAAAAAAAI7A/2T26aQzCip0ABzmyMsDHTRv7D9gAul0ow/s1600/Advanced_logging_installed.png", "sasasas", "81839200-292-90")
+  mycursor.execute(sql, val)
+  mydb.commit()
 
 arguments = sys.argv[1:]
 count = len(arguments)
@@ -87,4 +99,4 @@ else:
     check_number_of_argument(count)
     download_image_to_local(arguments)
     upload_image_to_s3(arguments)
-    insert_into_db()
+    #insert_into_db()
