@@ -1,0 +1,12 @@
+Database INFO
+=============
+For assigment i had used mysldb from amazon
+
+create database frndsurancedb;
+create user 'frndsuranceuser'@'localhost' identified by 'password123';
+grant all on frndsurancedb.* to 'frndsuranceuser' identified by 'password123';
+use frndsurancedb;
+create table imageinfo(db_image_name VARCHAR(255),db_url VARCHAR(255),s3_path VARCHAR(255),image_time_stamp TIMESTAMP);
+
+How to connect to mysqldb from localhost
+ mysql --host <END-POINT> --port <PORT> -u frndsuranceuser -p

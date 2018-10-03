@@ -1,0 +1,2 @@
+From the same instance using CURL:
+curl --header "Content-Type: application/json" --request POST --data '{"parameter1":"https://3.bp.blogspot.com/-WHwA7WPQ2IY/VwHnGnn_9EI/AAAAAAAAI7A/2T26aQzCip0ABzmyMsDHTRv7D9gAul0ow/s1600/Advanced_logging_installed.png","parameter2":"myimage"}' http://localhost/

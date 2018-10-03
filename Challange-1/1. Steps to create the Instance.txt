@@ -1,0 +1,36 @@
+OS: Amazon linux
+Install HTTPD & PHP
+	]# sudo yum update -y
+	]# sudo yum install -y httpd24 php70 mysql56-server php70-mysqlnd
+Disableing Welcome page
+	]#mv /etc/httpd/conf.d/welcome.conf welcome.conf.disabled
+Start the Apache web server.
+	]# sudo service httpd start
+Start HTTPD on system boot itself
+	]# sudo chkconfig httpd on
+
+Insatlling Python 3.7
+	]# yum install gcc openssl-devel bzip2-devel make sqlite-devel zlib-devel gzipzlib wget libffi-devel -y
+	]# mkdir /usr/src
+	]# cd /usr/src
+	]# wget https://www.python.org/ftp/python/3.7.0/Python-3.7.0.tgz && \
+    ]# tar xzf Python-3.7.0.tgz
+	]# ./configure --enable-optimizations
+	]# make altinstall
+	]# unlink /usr/bin/python
+	]# ln -s /usr/src/Python-3.7.0/python /usr/bin/python
+	Installing Python Dependencies 
+		]# python -m ensurepip
+		]# python pip install --upgrade pip
+		]# python -m pip install wheel
+		]# python -m pip install boto3
+		]# python -m pip install mysql-connector
+		]# python -m pip install configparser
+Coping files for API
+	]# mkdir /var/www/s3-api/
+	]# mkdir /opt/api/
+	]# chmod +x /root
+	1. Copy s3-api.sh or s3-api.py to /opt/api/ *Python script wont do db operation / By default shell script is calling from PHP
+	2. Copy index.php to /var/www/s3-api/
+	3. Copy s3-api.conf to /etc/httpd/conf.d * After that reload httpd
+	
