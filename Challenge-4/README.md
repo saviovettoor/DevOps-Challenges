@@ -1,3 +1,4 @@
+```
 Installing Docker
 -----------------
 OS: CentOS Linux release 7.6.1810 (Core)
@@ -38,25 +39,4 @@ Create following folders in the server and place the file
 		docker build -t notification .
 	4. Starting notification server
 		docker run -d -it --name=notifications -v shared_volume:/opt/ notification
-	
-
-version: '3'
-services:
-#Nginx Service
- webserver:
-  image: nginx:latest
-  container_name: e-bot7-webserver
-  restart: unless-stopped
-  tty: true
-  ports:
-    - "80:80"
-  volumes:
-   - /opt/e-bot7/index-page/:/usr/share/nginx/html
-   - /opt/e-bot7/conf.d/:/etc/nginx/conf.d/
-#Notification service
-	notifiebserver:
-	 build: .
-	 container_name: e-bot7-notifiebserver
-	 restart: unless-stopped
-	 ports:
-	  - "465:465"
+```
