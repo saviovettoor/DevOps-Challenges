@@ -1,0 +1,24 @@
+# how to create 100 empty files, named 1.txt, 2.txt, 3.txt .. 100.txt
+
+]#touch {1..100}.txt
+
+
+# write all other file names as content in each file.
+# e.g:
+# for 1.txt
+# write "2.txt ,3.txt, 4.txt ... 100.txt" in the file
+# cat 1.txt
+# 2.txt
+# 3.txt
+# ...
+# 100.txt
+
+number_of_files_in_folder=`ls *.txt | wc -l`
+for i in *.txt; do
+        for (( j=1; j<=$number_of_files_in_folder; j++ )); do
+        file_no=`echo $i | awk -F .txt '{print $1}'`
+        if [ $file_no -ne $j ]; then
+          echo $j.txt >> $i
+        fi
+ done
+done
