@@ -1,4 +1,4 @@
-## Deamon Process
+## Daemon Process
 
 ```
 Download and Install Python 3 from Source
