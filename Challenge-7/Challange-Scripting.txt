@@ -1,0 +1,64 @@
+touch bike.png car.jpg comedy.mov error.log horror.avi info.txt interview.mp3 song.flac tree-small.jpeg 11.10.2017_y
+
+#!/bin/bash
+FOLDER_LIST=("images" "music" "videos")
+
+#Creating Folders if not present
+for INDEX in ${FOLDER_LIST[@]}; do
+        if [ ! -d "$INDEX" ]; then
+                mkdir $INDEX
+        fi
+done
+
+for file in ./*; do
+        if [ -f "$file" ]; then
+                FILE_EXTENSION=`echo $file | awk -F "." '{print $NF}'`
+             case $FILE_EXTENSION in
+                png|jpg)
+                        echo "image"
+                        mv $file images/ ;;
+                mp3|flac)
+                        mv $file music/ ;;
+                  avi|mov)
+                        mv $file videos/ ;;
+                log)
+                        rm -rf $file;;
+                esac
+        fi
+done
+
+Output:
+images/
+	bike.png
+	car.jpg
+music/
+	interview.mp3
+	song.flac
+videos/
+	comedy.mov
+	horror.avi
+11.10.2017_y
+info.txt
+tree-small.jpeg
+
+
+#######################
+Get Absolute Value Sum
+#######################
+
+#!/bin/bash
+NUMBER_OF_ARGUMENTS=$#
+echo $NUMBER_OF_ARGUMENTS
+sum=0
+for i in $@
+do
+   if [ $i -lt 0 ] ; then
+     i="${i#-}"
+     echo $i
+   fi
+    sum=$((sum+i))
+done
+echo "Total Sum is $sum"
+
+eg: Input- ./<script> 1 2 -3
+Output: 6
