@@ -13,6 +13,9 @@
 # ...
 # 100.txt
 
+soln 1: for i in `ls` ; do ls $PWD | grep -v $i >> $i; done
+
+Soln 2: 
 number_of_files_in_folder=`ls *.txt | wc -l`
 for i in *.txt; do
         for (( j=1; j<=$number_of_files_in_folder; j++ )); do
@@ -22,3 +25,4 @@ for i in *.txt; do
         fi
  done
 done
+
