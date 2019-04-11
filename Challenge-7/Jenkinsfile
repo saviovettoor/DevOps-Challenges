@@ -1,0 +1,95 @@
+pipeline {
+	agent any
+	environment {
+        DOCKER_IMAGE_NAME = "saviovettoor/mynodejsapp"
+    }
+    tools { nodejs "nodejs" }
+    stages {
+        stage('Build') { 
+        steps {
+              sh 'npm install' 
+            }
+        }
+	stage('Create Docker Image') {
+		steps {
+                script {
+                    app = docker.build(DOCKER_IMAGE_NAME)
+                    app.inside {
+                        sh 'echo Hello, World!'
+                    }
+                }
+            }
+        }
+	stage('Push Docker Image') {
+         when {
+               branch 'master'
+            }
+            steps {
+                script {
+                    docker.withRegistry('https://registry.hub.docker.com', 'DockeLogin') {
+                        app.push("${env.BUILD_NUMBER}")
+                        app.push("latest")
+                    }
+                }
+            }
+        }
+	stage('SmokeTest') {
+        steps {
+            script {
+			    sh 'docker run -d -p 8081:80 --name myapp saviovettoor/mynodejsapp:latest' 
+                    sleep (time: 5)
+                    def response = httpRequest (
+                        url: "http://localhost:8081/",
+                        timeout: 20
+                    )
+                    if (response.status != 200) {
+                        error("Smoke test failed.")
+                    }
+                }
+            }
+        }
+    stage('Remove docker image from local') {
+			steps{
+				sh "docker rmi registry.hub.docker.com/${DOCKER_IMAGE_NAME}:${env.BUILD_NUMBER}"
+				sh "docker stop myapp"
+				sh "docker rm myapp"
+			}
+		}
+	stage('Approve for Deployment') {
+	    steps { input 'Deploy to Production?' }
+    }
+	stage('DeployToProduction') {
+        when {
+            branch 'master'
+        }
+        steps {
+               milestone(1)
+		kubernetesDeploy(
+		    kubeconfigId: 'kubeconfig',
+                    configs: 'deploynodejsapp.yml',
+                    enableConfigSubstitution: true
+                )
+		sh "kubectl apply -f gateway.yml"
+		sh "kubectl apply -f destinationrule.yml"
+		sh "kubectl apply -f virtualservice.yml"
+            }
+        }
+   }
+   post {
+	    always {
+			deleteDir()
+		}
+		success {
+			echo 'Sending Email'
+			mail to: 'saviomathew89@gmail.com',
+			subject: "Prod Deployment completed sucessfully",
+			body: "Prod Deployment completed sucessfully ${env.BUILD_URL}"
+		}
+		failure {
+			echo 'Sending Email...'
+			mail to: 'saviomathew89@gmail.com',
+			subject: "Prod Deployment FAILED..",
+			body: "Prod Deployment Got failed"
+		}
+	}
+}
