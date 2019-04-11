@@ -85,35 +85,13 @@ Worker Node
 ]#sysctl --system -> check
 ]# kubeadm join --token ----> what copied from master
 
-
-
 Istio Setup
 -----------
 	Installation:
 		https://istio.io/docs/setup/kubernetes/install/kubernetes/
 		To change istio service from LoadBalance to NodePort i updated it in install/kubernetes/istio-demo.yaml, (Search for LoadBalancer and replaced it with NodePort.)
 		
-	The app is deployed in the namespace Demo
-		
-Jenkins Details
----------------
-Console login: http://13.126.1.169:8080
-			   User: admin
-			   Passwd: admin
-	login details
-		user: cloud_user
-		password: payoda@123
-k8s Master:
-	IP: 13.232.193.176
-	login details
-		user: cloud_user
-		password: payoda@123
-k8s Worker Node:
-	IP: 13.233.57.37
-	login details
-		user: cloud_user
-		password: payoda@123
-		
+The app is deployed in the namespace Demo
 		
 How to test
 ------------
