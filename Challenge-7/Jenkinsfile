@@ -56,8 +56,11 @@ pipeline {
 			}
 		}
 	stage('Approve for Deployment') {
-	    steps { input 'Deploy to Production?' }
-    }
+		steps { 
+			timeout(time: 10, unit:'SECONDS')  { 
+				input 'Deploy to Production?' }
+    		}
+	}
 	stage('DeployToProduction') {
         when {
             branch 'master'
